@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../resources/common.css">
+    <link rel="stylesheet" href="../resources/custom.css">
+    <title>study_01</title>
+</head>
+<body>
+    <div id="con">
+        <form id="signUpForm">
+            <div class="form01">
+                <ul class="form-list">
+                    <li>
+                        <div class="l-con">아이디</div>
+                        <div class="r-con">
+                            <input type="text" class="intxt errorTxt" id="userId" name="userId" data-error="아이디">
+                        </div>
+                    </li>
+                    <li>
+                        <div class="l-con">비밀번호</div>
+                        <div class="r-con">
+                            <input type="password" class="intxt errorTxt" name="userPw" data-error="비밀번호">
+                        </div>
+                    </li>
+                    <li>
+                        <div class="l-con">성별</div>
+                        <div class="r-con">
+                            <div class="inRadio">
+                                <input type="radio" class="errorRadio" name="userSex" id="male" data-error="성별">
+                                <label for="male"><span></span>남자</label>
+                            </div>
+                            <div class="inRadio">
+                                <input type="radio" class="errorRadio" name="userSex" id="female" data-error="성별">
+                                <label for="female"><span></span>여자</label>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="l-con">동의여부</div>
+                        <div class="r-con">
+                            <div class="inRadio">
+                                <input type="radio" class="errorRadio" name="userAgree" id="userAgree" data-error="동의여부">
+                                <label for="userAgree"><span></span>동의</label>
+                            </div>
+                            <div class="inRadio">
+                                <input type="radio" class="errorRadio" name="userAgree" id="userDisagree" data-error="동의여부">
+                                <label for="userDisagree"><span></span>거절</label>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="btn-wrap">
+                    <button class="btn_submit" data-formId="signUpForm">확인</button>
+                </div>
+            </div>
+        </form>
+        <div id="test"></div>
+        <div id="test2"></div>
+    </div>
+    <script>
+        function formCheck(){
+            const btnSubmit = document.querySelectorAll('.btn_submit');
+            let submitLength = btnSubmit.length;
+
+            for (var i = 0; i < submitLength; i++) {
+                btnSubmit[i].addEventListener('click', function(e){
+                    let formName = this.getAttribute('data-formId');
+                    if (formName == null) {
+                        formName = 'form';
+                    }
+                    
+                    submitClick(e, formName);
+                });
+            }
+
+            function submitClick(e, formName) {
+                e.preventDefault();
+                let signUpForm = document.querySelector('#' + formName);
+                let errorName;
+                // text 체크
+                let checkTxt = signUpForm.querySelectorAll('input.errorTxt');
+                if (checkTxt != null) {
+                    for (var i=0; i < checkTxt.length; i++) {
+                        if (checkTxt[i].value == false) {
+                            errorName = checkTxt[i].getAttribute('data-error');
+                            errorName == null ? errorTxt = '데이터' : errorTxt = errorName;
+                            checkTxt[i].focus();
+                            return alert(errorTxt + '를 입력해주세요');
+                        }
+                    }
+                }
+
+
+                // 라디오 체크
+                let checkRadio = signUpForm.querySelectorAll('input.errorRadio');
+                let radioNames = [];
+                // 라디오박스 존재여부
+                if (checkRadio != null) {
+
+                    // 라디오 박스 name 체크
+                    for (var i = 0; i < checkRadio.length; i++ ){
+                        if (i == 0) {
+                            radioNames.push(checkRadio[i].getAttribute('name'))
+                        } else {
+                            let prevName = checkRadio[i - 1].getAttribute('name');
+                            let nowName = checkRadio[i].getAttribute('name');
+                            
+                            if (prevName != nowName) {
+                                radioNames.push(nowName);
+                            }
+                        }
+                    }
+
+                    // 라디오 박스 체크여부 확인
+                    for (var i = 0; i < radioNames.length; i++){
+                        // 같은 이름의 라디오박스 체크여부 확인
+                        let chckRadios = signUpForm.querySelectorAll('input[name="'+radioNames[i]+'"]');
+                        let isChecked = false;
+                        for (var j = 0; j < chckRadios.length; j++ ){
+                            if (chckRadios[j].checked == true) {
+                                isChecked = true;
+                            }
+                        }
+                        // 미체크시
+                        if (isChecked == false) {
+                            errorName = chckRadios[0].getAttribute('data-error');
+                            errorName == null ? '체크박스' : errorName;
+
+                            chckRadios[0].focus();
+                            return alert(errorName + '을(를) 체크해주세요');
+                        }
+                    }
+                }
+
+                // 체크 완료 후 전송
+                signUpForm.submit();
+            }
+        }
+
+        formCheck();
+    </script>
+</body>
+</html>
