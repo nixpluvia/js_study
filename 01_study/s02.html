@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../resources/common.css">
+    <link rel="stylesheet" href="../resources/custom.css">
+    <title>study_01</title>
+</head>
+<body>
+    <div id="con">
+        <div class="box01 bmar_100">
+            <!-- 첫번째 탭 -->
+            <div id="tab-h-01" class="tab-box">
+                <ul class="tab-wrap">
+                   <li><a href="#" class="btn-tab on">탭1</a></li>
+                   <li><a href="#" class="btn-tab">탭2</a></li>
+                   <li><a href="#" class="btn-tab">탭3</a></li>
+                   <li><a href="#" class="btn-tab">탭4</a></li>
+                </ul>
+            </div>
+            <div id="tab-c-01" class="tab-c-wrap">
+                <div class="tab-con on">탭 컨텐츠1</div>
+                <div class="tab-con">탭 컨텐츠2</div>
+                <div class="tab-con">탭 컨텐츠3</div>
+                <div class="tab-con">탭 컨텐츠4</div>
+            </div>
+        </div>
+
+        <div class="box02">
+            <!-- 두번째 탭 -->
+            <div id="tab-h-02" class="tab-box">
+                <ul class="tab-wrap">
+                   <li><a href="#" class="btn-tab on">탭1</a></li>
+                   <li><a href="#" class="btn-tab">탭2</a></li>
+                   <li><a href="#" class="btn-tab">탭3</a></li>
+                   <li><a href="#" class="btn-tab">탭4</a></li>
+                </ul>
+            </div>
+            <div id="tab-c-02" class="tab-c-wrap">
+                <div class="tab-con on">탭 컨텐츠1</div>
+                <div class="tab-con">탭 컨텐츠2</div>
+                <div class="tab-con">탭 컨텐츠3</div>
+                <div class="tab-con">탭 컨텐츠4</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        //첫번째 탭박스
+        tabBox('.btn-tab', {
+            tabBoxId : '#tab-h-01',
+            tabConWrapId : '#tab-c-01'
+        });
+
+        //두번째 탭박스
+        tabBox('.btn-tab', {
+            tabBoxId : '#tab-h-02',
+            tabConWrapId : '#tab-c-02'
+        });
+
+        function tabBox(selector, option){
+            let selectors; //탭의 버튼들
+            let tabBoxId; //탭 박스의 ID 값
+            let tabBoxElem; //탭 박스의 Element
+            let tabConWrapId; //탭 컨텐츠 박스의 ID 값
+            let tabConWrapElem; //탭 컨텐츠 박스의 Element
+            let tabConClass; //탭 컨텐츠 Class
+            let tabConElem; //탭 컨텐츠 Class
+
+            function init(){
+                option.tabBoxId == null ? tabBoxId = '#tab-head' : tabBoxId = option.tabBoxId; //탭 박스의 기본 ID 값 설정
+                option.tabConWrapId == null ? tabConWrapId = '#tab-body' : tabConWrapId = option.tabConWrapId; //탭 컨텐츠 박스의 기본 ID 값 설정
+                option.tabConClass == null ? tabConClass = '.tab-con' : tabConClass = option.tabConClass; //탭 컨텐츠 박스의 기본 ID 값 설정
+
+                tabBoxElem = document.querySelector(tabBoxId); //탭 박스의 Element 선택
+                tabConWrapElem = document.querySelector(tabConWrapId); //탭 컨텐츠 박스의 Element 선택
+                selectors = tabBoxElem.querySelectorAll(selector); //탭 박스 하위의 버튼들 선택
+                tabConElem = tabConWrapElem.querySelectorAll(tabConClass);
+            }
+
+            function addEvent(){
+                //클릭 이벤트 등록
+                for (let i=0; i < selectors.length;i++) {
+                    selectors[i].addEventListener('click', function(e){
+                        const $this = this;
+                        tabAction(e, $this, i); //액션 실행
+                    });
+                }
+            }
+
+            function tabAction(e, $this, btnIndex) {
+                e.preventDefault(); //A태그 링크방지
+
+                //현재 클릭된 버튼이 활성화가 아닐 경우 실행
+                if(!$this.classList.contains('on')) {
+                    //버튼 클래스 제거
+                    for (let i=0; i < selectors.length; i++) {
+                        if (selectors[i].classList.contains('on')) {
+                            selectors[i].classList.remove('on'); //활성화된 버튼 클래스 제거
+                            tabConElem[i].classList.remove('on'); //활성화된 버튼과 같은 순서의 탭 컨텐츠
+                        }
+                    }
+
+                    // 현재 클릭된 버튼 클래스 추가
+                    $this.classList.add('on');
+                    tabConElem[btnIndex].classList.add('on');
+                }
+            }
+
+            function start() {
+                init();
+                addEvent();
+            }
+
+            start();
+        }
+    </script>
+</body>
+</html>

@@ -63,7 +63,7 @@
     <script>
         function formCheck(){
             const btnSubmit = document.querySelectorAll('.btn_submit');
-            let submitLength = btnSubmit.length;
+            const submitLength = btnSubmit.length;
 
             for (var i = 0; i < submitLength; i++) {
                 btnSubmit[i].addEventListener('click', function(e){
@@ -78,59 +78,73 @@
 
             function submitClick(e, formName) {
                 e.preventDefault();
-                let signUpForm = document.querySelector('#' + formName);
-                let errorName;
+                const signUpForm = document.querySelector('#' + formName); //체크할 데이터 폼
+                let errorName; //오류 시 오류 구간의 이름
+
                 // text 체크
-                let checkTxt = signUpForm.querySelectorAll('input.errorTxt');
-                if (checkTxt != null) {
+                const checkTxt = signUpForm.querySelectorAll('input.errorTxt'); // text 타입의 체크할 요소
+                //체크할 요소가 있을 경우 실행
+                if (!checkTxt) {
                     for (var i=0; i < checkTxt.length; i++) {
-                        if (checkTxt[i].value == false) {
+                        //요소의 값이 비어있을 경우
+                        if (!checkTxt[i].value) {
+                            //비어 있는 요소의 이름 값 확인
                             errorName = checkTxt[i].getAttribute('data-error');
                             errorName == null ? errorTxt = '데이터' : errorTxt = errorName;
+
+                            //비어있는 요소로 포커스
                             checkTxt[i].focus();
-                            return alert(errorTxt + '를 입력해주세요');
+                            return alert(errorTxt + '를 입력해주세요'); //submit 중단
                         }
                     }
                 }
 
 
                 // 라디오 체크
-                let checkRadio = signUpForm.querySelectorAll('input.errorRadio');
-                let radioNames = [];
+                const checkRadio = signUpForm.querySelectorAll('input.errorRadio'); //체크할 라디오박스
+                const radioNames = []; //라디오 박스들의 name 값을 담을 배열
                 // 라디오박스 존재여부
-                if (checkRadio != null) {
+                if (!checkRadio) {
 
-                    // 라디오 박스 name 체크
+                    // 라디오 박스 name 값 별 그룹화
                     for (var i = 0; i < checkRadio.length; i++ ){
                         if (i == 0) {
+                            //첫번째 값은 push
                             radioNames.push(checkRadio[i].getAttribute('name'))
-                        } else {
-                            let prevName = checkRadio[i - 1].getAttribute('name');
-                            let nowName = checkRadio[i].getAttribute('name');
+                        } else {                            
+                            let prevName = checkRadio[i - 1].getAttribute('name'); //이전의 name 값
+                            let nowName = checkRadio[i].getAttribute('name');//현재의 name 값
                             
+                            //이전 name값과 현재의 name 값이 같지 않다면 배열에 push
                             if (prevName != nowName) {
                                 radioNames.push(nowName);
                             }
                         }
                     }
 
+
                     // 라디오 박스 체크여부 확인
                     for (var i = 0; i < radioNames.length; i++){
-                        // 같은 이름의 라디오박스 체크여부 확인
+                        
+                        // 같은 name 값을 가진 그룹의 라디오박스 체크여부 확인
                         let chckRadios = signUpForm.querySelectorAll('input[name="'+radioNames[i]+'"]');
-                        let isChecked = false;
+                        let isChecked = false; //체크 여부 기본 값 설정
                         for (var j = 0; j < chckRadios.length; j++ ){
+                            //checked된 라디오박스가 있다면 체크 여부 값 변경
                             if (chckRadios[j].checked == true) {
                                 isChecked = true;
                             }
                         }
-                        // 미체크시
+
+                        // 그룹 내 checked 된 값이 없다면 실행
                         if (isChecked == false) {
+                            //체크되지 않은 그룹의 이름 확인
                             errorName = chckRadios[0].getAttribute('data-error');
                             errorName == null ? '체크박스' : errorName;
 
+                            //체크되지 않은 라디오박스의 첫번째 값으로 포커스
                             chckRadios[0].focus();
-                            return alert(errorName + '을(를) 체크해주세요');
+                            return alert(errorName + '을(를) 체크해주세요'); //submit 중단
                         }
                     }
                 }
