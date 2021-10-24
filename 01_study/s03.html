@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../resources/common.css">
+    <link rel="stylesheet" href="../resources/custom.css">
+    <title>study_01</title>
+</head>
+<body>
+    <div id="con">
+        <div class="form-wrap">
+            <form id="form01">
+                <div class="data-wrap" id="formType01">
+                    <div class="data-box" id="dataA1">
+                        <div class="data-head">
+                            <strong class="data-tit">데이터A 타이틀</strong>
+                            <div class="btn-wrap">
+                                <a href="#" class="btn-remove">데이터 폼 제거</a>
+                                <a href="#" class="btn-add">데이터 폼 추가</a>
+                            </div>
+                        </div>
+                        <div class="data-body">
+                            <input type="text" id="dataATypeA1" class="intxt" name="ATypeA1" placeholder="A데이터를 입력해주세요.">
+                            <input type="text" id="dataATypeB1" class="intxt" name="ATypeB1" placeholder="B데이터를 입력해주세요.">
+                        </div>
+                    </div>
+                </div>
+                <div class="data-wrap v2" id="formType02">
+                    <div class="data-box" id="dataB">
+                        <div class="data-head">
+                            <strong class="data-tit">데이터B 타이틀</strong>
+                            <div class="btn-wrap">
+                                <a href="#" class="btn-remove">데이터 폼 제거</a>
+                                <a href="#" class="btn-add">데이터 폼 추가</a>
+                            </div>
+                        </div>
+                        <div class="data-body">
+                            <input type="text" id="dataBTypeA1" class="intxt" name="BTypeA1" placeholder="A데이터를 입력해주세요.">
+                            <input type="text" id="dataBTypeB1" class="intxt" name="BTypeB1" placeholder="B데이터를 입력해주세요.">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-wrap">
+                    <button type="submit">저장</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        //1. form 동적생성
+        //2. 리미트
+        //3. 해당것만 삭제 되게
+        //4. 저장 버튼 누르면 동적 생성한것까지 데이터 콘솔로
+        
+
+        window.onload = function(){
+            // A그룹
+            const btnAdd1 = document.querySelector('#formType01 .btn-add');//추가 버튼
+            const btnRemove1 = document.querySelector('#formType01 .btn-remove');//추가 버튼
+            const dataWrap1 = document.querySelector('#formType01');
+            const dataLimit1 = 5;
+
+            //요소 추가 이벤트
+            btnAdd1.addEventListener('click', function(e){
+                e.preventDefault();
+
+                addForm(this, dataWrap1, dataLimit1);
+            });
+            //요소 제거 이벤트
+            btnRemove1.addEventListener('click', function(e){
+                e.preventDefault();
+
+                removeForm(this, dataWrap1);
+            });
+
+
+            // B그룹
+            const btnAdd2 = document.querySelector('#formType02 .btn-add');//추가 버튼
+            const btnRemove2 = document.querySelector('#formType02 .btn-remove');//추가 버튼
+            const dataWrap2 = document.querySelector('#formType02');
+            const dataLimit2 = 5;
+            //요소 추가 이벤트
+            btnAdd2.addEventListener('click', function(e){
+                e.preventDefault();
+
+                addForm(this, dataWrap2, dataLimit2);
+            });
+            //요소 제거 이벤트
+            btnRemove2.addEventListener('click', function(e){
+                e.preventDefault();
+
+                removeForm(this, dataWrap2);
+            });
+        }
+
+
+        //데이터 박스 동적생성
+        function addForm (selector, dataWrap, dataLimit){
+            let dataBoxNum = dataWrap.querySelectorAll('.data-box').length; //데이터 박스 갯수
+            // 요소 추가 제한
+            if(dataBoxNum < 20 == false){
+                //요소 초과시 알림창
+                alert('데이터 폼은 최대 20개까지 생성 가능합니다.');
+                return false;
+            }
+
+            const dataBox = selector.closest('.data-box');//클릭한 Element의 데이터박스
+            const cloneBox = dataBox.cloneNode(true);//클릭한 Element 복사
+            dataWrap.append(cloneBox); //복사한 Element 추가
+            ++dataBoxNum//데이터 박스 갯수 추가
+            
+
+            // 데이터박스ID 값 설정
+            const cloneBoxId = cloneBox.getAttribute('id').replace(/[0-9]/g, ""); //기존 ID 값 (숫자제거)
+            cloneBox.setAttribute('id', cloneBoxId + dataBoxNum);
+
+            const cloneBoxInput = cloneBox.querySelectorAll('input[type="text"'); //추가한 요소의 안에 있는 Input 요소
+            //input 요소 값 리셋 및 ID 값 설정
+            for (var i=0; i < cloneBoxInput.length; i++){
+                cloneBoxInput[i].value = ''; //값 초기화
+                let inputId = cloneBoxInput[i].getAttribute('id').replace(/[0-9]/g, ""); //기존 ID 값 (숫자제거)
+                let inputName = cloneBoxInput[i].getAttribute('name').replace(/[0-9]/g, "");
+                cloneBoxInput[i].setAttribute('id', inputId + dataBoxNum); // 기존 ID 값에 증가된 숫자가 추가된 ID값 부여
+                cloneBoxInput[i].setAttribute('name', inputName + dataBoxNum) // 기존 Name 값에 증가된 숫자가 추가된 Name값 부여
+            }
+
+
+            //타이틀 제거
+            const clonedataTit = cloneBox.querySelector('.data-tit');
+            //타이틀 존재여부 체크
+            if (clonedataTit) {
+                clonedataTit.parentNode.removeChild(clonedataTit);//타이틀 제거
+            }
+            
+            //복사된 추가버튼 이벤트 리스너 등록
+            const cloneBtnAdd = cloneBox.querySelector('.btn-add');
+            cloneBtnAdd.addEventListener('click', function(e){
+                e.preventDefault();
+                addForm(this, dataWrap, dataLimit);
+            });
+
+
+            //복사된 제거버튼 이벤트 리스너 등록
+            const cloneBtnRemove = cloneBox.querySelector('.btn-remove');
+            cloneBtnRemove.addEventListener('click', function(e){
+                e.preventDefault();
+                removeForm(this, dataWrap);
+            });
+        }
+        
+
+        //데이터 박스 제거
+        function removeForm(selector, dataWrap){
+            let dataBoxs = dataWrap.querySelectorAll('.data-box');
+            let dataBoxNum = dataBoxs.length;//데이터 박스 갯수
+            if (dataBoxNum <= 1){
+                alert('데이터 폼은 최소 1개 입니다.');
+                return false;
+            }
+            const dataBox = selector.closest('.data-box');//클릭한 Element의 데이터박스
+            dataBox.parentNode.removeChild(dataBox);// 데이터 박스 삭제
+
+
+            dataBoxs = dataWrap.querySelectorAll('.data-box'); //데이터 박스 재선택
+            --dataBoxNum//데이터 박스 갯수 재설정
+
+            // 기존 데이터 박스 ID 값 재설정
+            let dataBoxId;
+            let inputId = [];
+            let inputName = [];
+            for (let i=0; i<dataBoxNum; i++){
+                let dataInputs = dataBoxs[i].querySelectorAll('input[type="text"'); //데이터 박스 안의 Inputs
+                let idNum = i + 1;
+
+                //데이터 박스 요소들의 ID값 설정
+                if (i == 0) {
+                    dataBoxId = dataBoxs[i].getAttribute('id').replace(/[0-9]/g, "");//데이터 박스의 ID 값
+                    for(let j=0; j<dataInputs.length; j++){
+                        inputId.push(dataInputs[j].getAttribute('id').replace(/[0-9]/g, ""));//Input들의 ID값을 배열에 담음
+                        inputName.push(dataInputs[j].getAttribute('name').replace(/[0-9]/g, ""));//Input들의 ID값을 배열에 담음
+                    }
+                }
+
+
+                dataBoxs[i].setAttribute('id', dataBoxId + idNum);//데이터 박스 ID 값 설정
+                for(let j=0; j<inputId.length; j++){
+                    dataInputs[j].setAttribute('id', inputId[j] + idNum) //Input ID 값 설정
+                    dataInputs[j].setAttribute('name', inputName[j] + idNum) //Input ID 값 설정
+                }
+            }
+        }
+        
+    </script>
+</body>
+</html>

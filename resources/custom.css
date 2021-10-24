@@ -33,3 +33,24 @@
 .tab-c-wrap {display: block;}
 .tab-c-wrap .tab-con {display: none; margin-top: 20px; padding: 20px; border: 1px solid #e0e0e0;}
 .tab-c-wrap .tab-con.on {display: block;}
+
+
+
+/*s03*/
+.form-wrap {}
+.form-wrap .data-wrap {margin-bottom: 50px;}
+.form-wrap .data-wrap .data-box {display: block;}
+.form-wrap .data-wrap .data-box::after {content:""; display: block; clear: both;}
+.form-wrap .data-wrap .data-box .data-head {padding: 20px; background-color: #e0e0e0;}
+.form-wrap .data-wrap.v2 .data-box .data-head {background-color:rgb(153, 218, 238);}
+.form-wrap .data-wrap .data-box .data-head::after {content:""; display: block; clear: both;}
+.form-wrap .data-wrap .data-box .data-head .data-tit {font-size: 1.5rem; font-weight: bold;}
+.form-wrap .data-wrap .data-box .data-head .btn-wrap {float:right;}
+.form-wrap .data-wrap .data-box .data-head .btn-wrap::after {content:""; display: block; clear: both;}
+.form-wrap .data-wrap .data-box .data-head .btn-wrap .btn-add {float: left; width: 40px; height: 40px; text-align: center; font-size:0; background-color: blue;}
+.form-wrap .data-wrap .data-box .data-head .btn-wrap .btn-add::before {content:"+"; display: inline-block; font-weight: bold; font-size: 1.5rem; line-height: 40px; color: #fff;}
+.form-wrap .data-wrap .data-box .data-head .btn-wrap .btn-remove {float: left; width: 40px; height: 40px; border: 1px solid blue; text-align: center; font-size:0; background-color: #fff;}
+.form-wrap .data-wrap .data-box .data-head .btn-wrap .btn-remove::before {content:"-"; display: inline-block; font-weight: bold; font-size: 1.5rem; line-height: 38px; color: blue;}
+.form-wrap .data-wrap .data-box .data-body {padding: 20px; border: 1px solid #e0e0e0; border-top: none;}
+.form-wrap .data-wrap .data-box .data-body .intxt {width: 100%; margin-bottom: 10px;}
+.form-wrap .data-wrap .data-box .data-body .intxt:last-child {margin-bottom: 0px;}
