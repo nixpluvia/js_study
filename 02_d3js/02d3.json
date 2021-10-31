@@ -1,0 +1,17 @@
+[
+    {
+        "name" : "1차 접종 완료",
+        "value" : 5,
+        "color" : "#ff9800"
+    },
+    {
+        "name" : "2차 접종 완료",
+        "value" : 3,
+        "color" : "#ffcc80"
+    },
+    {
+        "name" : "미 접종",
+        "value" : 2,
+        "color" : "#fff3e0"
+    }
+]

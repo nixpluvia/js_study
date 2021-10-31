@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D3.js First Class</title>
+    <script src="http://d3js.org/d3.v5.js"></script>
+    <link rel="stylesheet" href="../resources/common.css">
+    <link rel="stylesheet" href="../resources/custom.css">
+</head>
+<body>
+    <div id="con">
+        <div class="canvas" style="overflow:hidden; position:relative; padding-bottom: 100%;">
+            <svg width="100%" height="100%" viewbox="0 0 500 500" style="position: absolute; top: 0; left: 0;"></svg>
+        </div>
+    </div>
+    <script>
+        const dims = {width: 300, height: 300, radius: 150}
+        const svg = d3.select('.canvas > svg');
+
+       
+
+        d3.json('./02d3.json').then(data => {
+            const graph = svg.append("g")
+            .attr('transform', 'translate(250, 250)');
+
+            const pie = d3.pie()
+                .value(d => d.value);
+
+            // const color = d3.scaleOrdinal([
+            //     "#ff9800",
+            //     "#ffa726",
+            //     "#ffb74d",
+            //     "#ffcc80",
+            //     "#ffe0b2",
+            //     "#fff3e0",
+            // ]);
+
+            const arc = d3.arc()
+                .innerRadius(dims.radius / 2)
+                .outerRadius(dims.radius);
+
+            const arcs = graph.selectAll('arc')
+                .data(pie(data))
+                .enter()
+                .append("g")
+                .attr('class', 'arc');
+            
+            arcs.append('path')
+                .attr("fill", (d) => {return d.data.color})
+                .attr('d', arc);
+        })
+        
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D3.js First Class</title>
+    <script src="http://d3js.org/d3.v3.js"></script>
+    <link rel="stylesheet" href="../resources/common.css">
+    <link rel="stylesheet" href="../resources/custom.css">
+</head>
+<body>
+    <div id="con">
+        <div class="canvas"></div>
+        <div class="canvas2" style="overflow:hidden; position:relative; padding-bottom: 100%;">
+            <svg width="100%" height="100%" style="position: absolute; top: 0; left: 0;"></svg>
+        </div>
+    </div>
+    <script>
+        // HTML DOM 선택
+        const canvas = d3.select(".canvas");
+
+        // append 새로운 태그 추가        
+        const svg = canvas.append("svg")
+            .attr("width", 100 + '%')
+            .attr("height", 600);
+            
+        //사각형
+        svg.append("rect")
+            .attr('width', 300)
+            .attr('height', 300)
+            .attr('fill', "red")
+            .attr("x", 0)
+            .attr("y", 0);
+
+
+        //원형
+        svg.append("circle")
+            .attr('r', 50)
+            .attr('cx', 360)
+            .attr('cy', 50)
+            .attr('fill', 'purple');
+
+
+        //선
+        svg.append("line")
+            .attr('x1', 410)
+            .attr('x2', 510)
+            .attr('y1', 0)
+            .attr('y2', 300)
+            .attr('stroke', 'green');
+
+
+        //텍스트
+        svg.append('text')
+            .attr('x', 0)
+            .attr('y', 321)
+            .attr('fill', 'black')
+            .text('Hello D3.js')
+            .style('font-fmaily', 'sans-serif');
+
+        // -------------
+        
+        const svg2 = d3.select('.canvas2 > svg');
+
+        d3.json('./01d3.json', function(error, data){
+            const rect = svg2.selectAll('rect').data(data);
+
+            rect.enter()
+                .append('circle')
+                .attr('r', (d) => {return d.r})
+                .attr('cx', (d) => {return d.cx})
+                .attr('cy', (d) => {return d.cy})
+                .attr('stroke', (d) => {return d.color})
+                .attr('stroke-width', (d) => {return d.stroke});
+        })
+        // .then(data => {
+
+        //     const rect = svg2.selectAll('rect').data(data);
+
+        //     rect.enter()
+        //         .append('circle')
+        //         .attr('r', (d) => {return d.r})
+        //         .attr('cx', (d) => {return d.cx})
+        //         .attr('cy', (d) => {return d.cy})
+        //         .attr('stroke', (d) => {return d.color})
+        //         .attr('stroke-width', (d) => {return d.stroke});
+
+        // })
+        
+    </script>
+</body>
+</html>
