@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D3.js First Class</title>
+    <script src="http://d3js.org/d3.v5.js"></script>
+    <link rel="stylesheet" href="../resources/common.css">
+    <link rel="stylesheet" href="../resources/custom.css">
+</head>
+<body>
+    <div id="con">
+        <div class="canvas" style="overflow:hidden; position:relative; padding-bottom: 100%;">
+            <svg width="100%" height="100%" viewbox="0 0 500 500" style="position: absolute; top: 0; left: 0;"></svg>
+        </div>
+    </div>
+    <script>
+        const data = [5, 10, 15, 20, 25, 30, 35];
+        const color = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'purple'];
+        
+        const maxNum = d3.max(data);
+        const canvasWidth = 500;
+        const canvasHeight = 500;
+        const barSpace = 10;
+        const barWidth = (canvasWidth - (barSpace * (data.length-1 ))) / data.length;
+        
+        const dataHeight = [];
+        for (var i = 0; i < data.length; i++) {
+            dataHeight.push(parseInt(canvasHeight / (maxNum / data[i])));
+        }
+        
+
+        const svg = d3.select('.canvas svg');
+
+        svg.selectAll('rect')
+            .append('g')
+            .data(dataHeight)
+            .enter()
+            .append('rect')
+            .attr('fill', (d, i) => {return color[i]})
+            .attr('width', barWidth)
+            .attr('height', (d, i) => {return d;})
+            .attr('x', (d, i) => {return (barWidth + barSpace) * i;})
+            .attr('y', (d, i) => {return canvasHeight - d;});
+    </script>
+</body>
+</html>
